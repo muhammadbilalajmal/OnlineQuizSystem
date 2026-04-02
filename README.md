@@ -112,7 +112,7 @@ QuizCloud/
 ## 🔥 Firebase Setup
 
 ### Step 1 — Create Firebase Project
-1. Go to [https://console.firebase.google.com](https://console.firebase.google.com)
+1. Go to [https://console.firebase.google.com]
 2. Click **"Add Project"** → name it `OnlineQuizSystem` → Create
 
 ### Step 2 — Create Firestore Database
