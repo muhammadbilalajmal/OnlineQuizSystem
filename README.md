@@ -40,7 +40,7 @@ The system demonstrates real-world use of cloud services including:
 
 ## 🌐 Live Demo
 
-🔗 **[https://your-netlify-url.netlify.app](https://your-netlify-url.netlify.app)**
+🔗 **[https://onlinequizsystemm.netlify.app/]**
 
 
 ---
@@ -142,12 +142,13 @@ service cloud.firestore {
 
 ```javascript
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
+  apiKey: "AIzaSyAW1BuCPywcW9rOdwScBg3r46oCKnCejds",
+  authDomain: "project-b4619.firebaseapp.com",
+  projectId: "project-b4619",
+  storageBucket: "project-b4619.firebasestorage.app",
+  messagingSenderId: "752389724021",
+  appId: "1:752389724021:web:3a56e368c0ff18e463253c",
+  measurementId: "G-8P6RNNPKL0"
 };
 ```
 
