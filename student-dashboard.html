@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizCloud — Student Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131c;
+      --surface2: #1a1a27;
+      --border: #2a2a3d;
+      --accent: #7c5cfc;
+      --accent2: #fc5c7d;
+      --accent3: #ffc947;
+      --text: #e8e8f0;
+      --muted: #6b6b85;
+      --success: #4ecca3;
+      --sidebar-w: 240px;
+    }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 20px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo .icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .sidebar-section {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 20px 0 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.15s;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(124, 92, 252, 0.12);
+      color: var(--accent);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .user-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 10px;
+      background: rgba(252, 92, 125, 0.1);
+      border: 1px solid rgba(252, 92, 125, 0.2);
+      border-radius: 10px;
+      color: var(--accent2);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(252, 92, 125, 0.2);
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 36px 40px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .page-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent), #b08dff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card.c2 .stat-value {
+      background: linear-gradient(135deg, var(--accent2), #ff8fa3);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .stat-card.c3 .stat-value {
+      background: linear-gradient(135deg, var(--success), #82f5d5);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .stat-card.c4 .stat-value {
+      background: linear-gradient(135deg, var(--accent3), #ffdf90);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #9b6dff);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(124, 92, 252, 0.35);
+    }
+
+    .btn-secondary {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-sm {
+      padding: 7px 14px;
+      font-size: 12px;
+    }
+
+    .quiz-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+    }
+
+    .quiz-card:hover {
+      border-color: rgba(124, 92, 252, 0.4);
+    }
+
+    .quiz-meta {
+      flex: 1;
+    }
+
+    .quiz-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .quiz-info {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-active {
+      background: rgba(78, 204, 163, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(78, 204, 163, 0.25);
+    }
+
+    .badge-closed {
+      background: rgba(252, 92, 125, 0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(252, 92, 125, 0.2);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty-text {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .empty-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      z-index: 999;
+      transition: opacity 0.3s, transform 0.3s;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toast.success {
+      border-color: rgba(78, 204, 163, 0.4);
+      color: var(--success);
+    }
+
+    #toast.error {
+      border-color: rgba(252, 92, 125, 0.4);
+      color: var(--accent2);
+    }
+
+    /* QUIZ ATTEMPT */
+    .attempt-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .timer-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .timer-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--success);
+      transition: color 0.3s;
+    }
+
+    .timer-display.warn {
+      color: var(--accent3);
+    }
+
+    .timer-display.danger {
+      color: var(--accent2);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .5
+      }
+    }
+
+    .progress-track {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .attempt-q {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .q-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .q-text {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .opt-btn {
+      width: 100%;
+      padding: 13px 18px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .opt-btn:hover {
+      border-color: var(--accent);
+      background: rgba(124, 92, 252, 0.06);
+    }
+
+    .opt-btn.selected {
+      border-color: var(--accent);
+      background: rgba(124, 92, 252, 0.12);
+      color: var(--accent);
+    }
+
+    /* RESULT */
+    .result-wrap {
+      max-width: 500px;
+      margin: 40px auto 0;
+      text-align: center;
+    }
+
+    .result-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .result-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .result-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .score-ring {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 6px solid;
+    }
+
+    .score-ring.pass {
+      border-color: var(--success);
+      box-shadow: 0 0 40px rgba(78, 204, 163, 0.2);
+    }
+
+    .score-ring.fail {
+      border-color: var(--accent2);
+      box-shadow: 0 0 40px rgba(252, 92, 125, 0.2);
+    }
+
+    .score-pct {
+      font-size: 36px;
+      font-weight: 800;
+    }
+
+    .score-lbl {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .result-stats {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .result-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+    }
+
+    .result-stat-val {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .result-stat-lbl {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .review-item {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    .review-q {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .review-ans {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="icon">⚡</div>QuizCloud
+    </div>
+    <div class="sidebar-section">Menu</div>
+    <button class="nav-link active" onclick="showSection('available',this)"><span>📋</span> Available Quizzes</button>
+    <button class="nav-link" onclick="showSection('history',this)"><span>📊</span> My Results</button>
+    <div class="sidebar-bottom">
+      <div class="user-chip">
+        <div class="avatar" id="sidebarAvatar">S</div>
+        <div>
+          <div class="user-name" id="sidebarName">Student</div>
+          <div class="user-role">Student</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- AVAILABLE -->
+    <div id="sectionAvailable">
+      <div class="page-header">
+        <h1 class="page-title">Available Quizzes</h1>
+        <p class="page-sub">Attempt quizzes from your teachers</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Available</div>
+          <div class="stat-value" id="statAvail">0</div>
+        </div>
+        <div class="stat-card c2">
+          <div class="stat-label">Attempted</div>
+          <div class="stat-value" id="statAttempted">0</div>
+        </div>
+        <div class="stat-card c3">
+          <div class="stat-label">Passed</div>
+          <div class="stat-value" id="statPassed">0</div>
+        </div>
+        <div class="stat-card c4">
+          <div class="stat-label">Best Score</div>
+          <div class="stat-value" id="statBest">—</div>
+        </div>
+      </div>
+      <div class="quiz-list" id="availableList"></div>
+    </div>
+
+    <!-- HISTORY -->
+    <div id="sectionHistory" style="display:none;">
+      <div class="page-header">
+        <h1 class="page-title">My Results</h1>
+        <p class="page-sub">Your quiz history</p>
+      </div>
+      <div class="quiz-list" id="historyList"></div>
+    </div>
+
+    <!-- ATTEMPT -->
+    <div id="sectionAttempt" style="display:none;">
+      <div class="attempt-wrap" id="attemptContainer"></div>
+    </div>
+
+  </main>
+
+  <div id="toast"></div>
+
+  <script type="module" src="./firebase-config.js"></script>
+  <script type="module" src="./student-dashboard.js"></script>
+</body>
+
+</html>
