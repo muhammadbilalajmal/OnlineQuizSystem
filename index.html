@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizCloud — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131c;
+      --border: #2a2a3d;
+      --accent: #7c5cfc;
+      --accent2: #fc5c7d;
+      --text: #e8e8f0;
+      --muted: #6b6b85;
+      --success: #4ecca3;
+    }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(124, 92, 252, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124, 92, 252, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes gridMove {
+      0% {
+        transform: translateY(0)
+      }
+
+      100% {
+        transform: translateY(60px)
+      }
+    }
+
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .glow-orb.one {
+      width: 400px;
+      height: 400px;
+      background: var(--accent);
+      top: -100px;
+      left: -100px;
+    }
+
+    .glow-orb.two {
+      width: 300px;
+      height: 300px;
+      background: var(--accent2);
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 0 60px rgba(124, 92, 252, 0.08);
+    }
+
+    .tab-bar {
+      display: flex;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .role-select {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .role-btn .role-icon {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .role-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .role-btn.active {
+      border-color: var(--accent);
+      background: rgba(124, 92, 252, 0.12);
+      color: var(--accent);
+    }
+
+    label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 18px;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--accent), #9b6dff);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+      margin-top: 6px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124, 92, 252, 0.35);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-panel {
+      display: none;
+    }
+
+    .form-panel.active {
+      display: block;
+    }
+
+    #message {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      display: none;
+    }
+
+    #message.error {
+      background: rgba(252, 92, 125, 0.12);
+      border: 1px solid rgba(252, 92, 125, 0.3);
+      color: var(--accent2);
+    }
+
+    #message.success {
+      background: rgba(78, 204, 163, 0.12);
+      border: 1px solid rgba(78, 204, 163, 0.3);
+      color: var(--success);
+    }
+
+    .demo-note {
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(124, 92, 252, 0.08);
+      border: 1px solid rgba(124, 92, 252, 0.2);
+      border-radius: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-orb one"></div>
+  <div class="glow-orb two"></div>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-mark">
+        <div class="logo-icon">⚡</div>QuizCloud
+      </div>
+      <div class="logo-sub">Cloud-Based Quiz Platform</div>
+    </div>
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="form-panel active" id="loginPanel">
+        <div class="role-select">
+          <button class="role-btn active" id="loginTeacherBtn" onclick="setRole('teacher','login')"><span
+              class="role-icon">👩‍🏫</span>Teacher</button>
+          <button class="role-btn" id="loginStudentBtn" onclick="setRole('student','login')"><span
+              class="role-icon">🎓</span>Student</button>
+        </div>
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@university.edu" />
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" />
+        <button class="btn" id="loginBtn" onclick="handleLogin()">Sign In →</button>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="form-panel" id="registerPanel">
+        <div class="role-select">
+          <button class="role-btn active" id="regTeacherBtn" onclick="setRole('teacher','reg')"><span
+              class="role-icon">👩‍🏫</span>Teacher</button>
+          <button class="role-btn" id="regStudentBtn" onclick="setRole('student','reg')"><span
+              class="role-icon">🎓</span>Student</button>
+        </div>
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Your full name" />
+        <label>Email Address</label>
+        <input type="email" id="regEmail" placeholder="you@university.edu" />
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Min. 6 characters" />
+        <button class="btn" id="regBtn" onclick="handleRegister()">Create Account →</button>
+      </div>
+
+      <div id="message"></div>
+      <div class="demo-note">⚡ No setup needed — data saved in your browser</div>
+    </div>
+  </div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+
+</html>
