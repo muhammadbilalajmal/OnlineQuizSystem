@@ -161,11 +161,15 @@ window.setRole = function (role, form) {
 window.handleRegister = async function () {
     const name     = document.getElementById('regName').value.trim();
     const email    = document.getElementById('regEmail').value.trim().toLowerCase();
+    const name = document.getElementById('regName').value.trim();
     const password = document.getElementById('regPassword').value;
 
-    if (!name)                         return showMsg('Please enter your full name.', 'error');
-    if (!email || !email.includes('@')) return showMsg('Please enter a valid email address.', 'error');
-    if (password.length < 6)           return showMsg('Password must be at least 6 characters.', 'error');
+    if (!name)
+        return showMsg('Please enter your full name.', 'error');
+    if (!email || !email.includes('@')) 
+        return showMsg('Please enter a valid email address.', 'error');
+    if (password.length < 6) 
+        return showMsg('Password must be at least 6 characters.', 'error');
 
     const btn = document.getElementById('regBtn');
     btn.disabled = true;
@@ -201,7 +205,7 @@ window.handleRegister = async function () {
 
 // ── LOGIN ──
 window.handleLogin = async function () {
-    const email    = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const password = document.getElementById('loginPassword').value;
 
     if (!email || !password) return showMsg('Please fill in all fields.', 'error');
@@ -245,7 +249,7 @@ window.handleLogin = async function () {
         if (session && session.role) {
             window.location.href = session.role === 'teacher' ? 'teacher-dashboard.html' : 'student-dashboard.html';
         }
-    } catch (e) {}
+    } catch (e) { }
 })();
 
 // ── ENTER KEY ──
