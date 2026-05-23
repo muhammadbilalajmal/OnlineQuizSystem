@@ -159,9 +159,8 @@ window.setRole = function (role, form) {
 
 // ── REGISTER ──
 window.handleRegister = async function () {
-    const name     = document.getElementById('regName').value.trim();
-    const email    = document.getElementById('regEmail').value.trim().toLowerCase();
     const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
     const password = document.getElementById('regPassword').value;
 
     if (!name)
